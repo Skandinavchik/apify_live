@@ -1,22 +1,18 @@
 
-let uniqueItems = [];
+const getMinimumPrices = (data) => {
+    const unique = data.reduce((acc, curr) => {
+        const existingItem = acc.find(item => item.offId === curr.offId);
 
-const isInArray = (arr, el) => {
-    return arr.findIndex((item) => {
-        if (item.offerId === el.offerId) {
-            if (+item.price.slice(1) > +el.price.slice(1)) {
-                return true;
-            }
-        } else return false;
-    });
-};
-
-const getUniqueItems = (arr) => {
-    arr.forEach(item => {
-        if (isInArray(uniqueItems, item) === -1) {
-            uniqueItems.push(item);
+        if (!existingItem) {
+            acc.push(curr);
         } else {
-            uniqueItems.splice(isInArray(uniqueItems, item), 1, item);
+            if (existingItem.price > curr.price) {
+                existingItem.price = curr.price;
+            }
         }
-    });
+
+        return acc;
+    }, []);
+
+    return unique;
 };
